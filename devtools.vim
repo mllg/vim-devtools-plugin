@@ -1,12 +1,11 @@
 function! s:SendDevtoolsCmd(cmd)
     let l:desc = findfile("DESCRIPTION", ".;")
-    let l:path = fnamemodify(l:desc, ":h")
-
     if l:desc == ""
         echo "DESCRIPTION file not found"
         return
     endif
 
+    let l:path = fnamemodify(l:desc, ":h")
     if SendCmdToR("require('devtools'); " . a:cmd . "('" . l:path . "')")
         echo "Found package DESCRIPTION in '" . l:path . "'"
     endif
