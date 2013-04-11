@@ -1,13 +1,13 @@
 function! s:SendDevtoolsCmd(cmd)
     let l:desc = findfile("DESCRIPTION", ".;")
     if l:desc == ""
-        echo "DESCRIPTION file not found"
+        call RWarningMsg("DESCRIPTION file not found.")
         return
     endif
 
     let l:path = fnamemodify(l:desc, ":h")
     if SendCmdToR("require('devtools'); " . a:cmd . "('" . l:path . "')")
-        echo "Found package DESCRIPTION in '" . l:path . "'"
+        echo "Found package DESCRIPTION in '" . l:path . "'."
     endif
 endfunction
 
