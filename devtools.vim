@@ -1,4 +1,4 @@
-function! s:SendDevtoolsCmd(cmd)
+function! SendDevtoolsCmd(cmd)
     let l:desc = findfile("DESCRIPTION", ".;")
     if l:desc == ""
         call RWarningMsg("DESCRIPTION file not found.")
@@ -11,26 +11,9 @@ function! s:SendDevtoolsCmd(cmd)
     endif
 endfunction
 
-function! RInstallPackage()
-    call s:SendDevtoolsCmd("install")
-endfunction
-
-function! RLoadPackage()
-    call s:SendDevtoolsCmd("load_all")
-endfunction
-
-function! RUnloadPackage()
-    call s:SendDevtoolsCmd("unload")
-endfunction
-
-function! RBuildPackage()
-    call s:SendDevtoolsCmd("build")
-endfunction
-
-function! RCheckPackage()
-    call s:SendDevtoolsCmd("check")
-endfunction
-
-function! RTestPackage()
-    call s:SendDevtoolsCmd("test")
-endfunction
+command RInstallPackage :call SendDevtoolsCmd("install")
+command RLoadPackage :call SendDevtoolsCmd("load_all")
+command RUnloadPackage :call SendDevtoolsCmd("unload")
+command RBuildPackage :call SendDevtoolsCmd("build")
+command RCheckPackage :call SendDevtoolsCmd("check")
+command RTestPackage :call SendDevtoolsCmd("test")
