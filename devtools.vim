@@ -11,9 +11,9 @@ function! SendDevtoolsCmd(cmd)
     endif
 endfunction
 
-command RInstallPackage :call SendDevtoolsCmd("install")
-command RLoadPackage :call SendDevtoolsCmd("load_all")
-command RUnloadPackage :call SendDevtoolsCmd("unload")
-command RBuildPackage :call SendDevtoolsCmd("build")
-command RCheckPackage :call SendDevtoolsCmd("check")
-command RTestPackage :call SendDevtoolsCmd("test")
+command! RInstallPackage :call SendDevtoolsCmd("install")
+command! RLoadPackage :call SendDevtoolsCmd("load_all")
+command! RUnloadPackage :call SendDevtoolsCmd("unload")
+command! RBuildPackage :call SendDevtoolsCmd("build")
+command! RCheckPackage :call SendDevtoolsCmd("check")
+command! RTestPackage :call SendDevtoolsCmd("test")
