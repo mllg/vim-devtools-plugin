@@ -6,7 +6,7 @@ function! SendDevtoolsCmd(cmd)
     endif
 
     let l:path = fnamemodify(l:desc, ":h")
-    if SendCmdToR("require('devtools'); " . a:cmd . "('" . l:path . "')")
+    if g:SendCmdToR("require('devtools'); " . a:cmd . "('" . l:path . "')")
         echo "Found package DESCRIPTION in '" . l:path . "'."
     endif
 endfunction
