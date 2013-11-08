@@ -3,23 +3,24 @@
 Extension for [Vim-R-Plugin](https://github.com/jcfaria/Vim-R-plugin) to support the devtools R package.
 
 ## Installation
-Vim-R-Plugin has the ability to include plugins, but you need to adde these to your .vimrc as described in section 6.27 of the vim-r-plugin docs:
-
+Use your favourite bundle manager to pull in this script.
+Here is a [neobundle](https://github.com/Shougo/neobundle.vim) example:
 ``
- let g:vimrplugin_source = "~/path/to/MyScript.vim,/path/to/AnotherScript.vim"
+NeoBundle 'mllg/vim-devtools-plugin'
 ``
 
-So for example, if you have installed vim-r-plugin with vundle, the line would look like:
-
+Then tell the R plugin to source the `devtools.vim` file:
 ``
   let g:vimrplugin_source = "~/.vim/bundle/vim-devtools-plugin/devtools.vim"
 ``
 
 ## Available commands
-* RInstallPackage - sends DevtoolsCmd "install"
-* RLoadPackage - sends DevtoolsCmd "load_all"
-* RUnloadPackage -  sends DevtoolsCmd "unload"
-* RBuildPackage - sends DevtoolsCmd "build"
-* RCheckPackage - sends DevtoolsCmd "check"
-* RTestPackage - sends DevtoolsCmd "test"
-* RDocumentPackage - sends DevtoolsCmd "document"
+* RInstallPackage: Issues "devtools::install"
+* RLoadPackage: Issues "devtools::load_all"
+* RUnloadPackage: Issues "devtools::unload"
+* RBuildPackage: Issues "devtools::build"
+* RCheckPackage: Issues "devtools::check"
+* RTestPackage: Issues "devtools::test"
+* RDocumentPackage: Issues "devtools::document"
+* RMakePackage: Issues "devtools::document" and "devtools::install"
+* RSource: Sources the current file with R's `source` command
