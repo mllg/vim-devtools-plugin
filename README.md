@@ -24,3 +24,5 @@ Then tell the R plugin to source the `devtools.vim` file:
 * RDocumentPackage: Issues "devtools::document"
 * RMakePackage: Issues "devtools::document" and "devtools::install"
 * RSource: Sources the current file with R's `source` command
+
+The DESCRITION file of the package is searched in the buffer's directory and its parents.
