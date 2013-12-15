@@ -9,11 +9,6 @@ Here is a [neobundle](https://github.com/Shougo/neobundle.vim) example:
 NeoBundle 'mllg/vim-devtools-plugin'
 ``
 
-Then tell the R plugin to source the `devtools.vim` file:
-``
-  let g:vimrplugin_source = "~/.vim/bundle/vim-devtools-plugin/devtools.vim"
-``
-
 ## Available commands
 * RInstallPackage: Issues "devtools::install"
 * RLoadPackage: Issues "devtools::load_all"
@@ -25,4 +20,4 @@ Then tell the R plugin to source the `devtools.vim` file:
 * RMakePackage: Issues "devtools::document" and "devtools::install"
 * RSource: Sources the current file with R's `source` command
 
-The DESCRITION file of the package is searched in the buffer's directory and its parents.
+The DESCRITION file of the package is searched in the directory and its parents of the current buffer.
