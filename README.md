@@ -4,20 +4,20 @@ Extension for [Vim-R-Plugin](https://github.com/jcfaria/Vim-R-plugin) to support
 
 ## Installation
 Use your favourite bundle manager to pull in this script.
-Here is a [neobundle](https://github.com/Shougo/neobundle.vim) example:
+Here is a [neobundle](https://github.com/Shougo/neobundle.vim) example using lazy load:
 ``
-NeoBundle 'mllg/vim-devtools-plugin'
+NeoBundleLazy 'mllg/vim-devtools-plugin', {'autoload':{'filetypes':['r','rmd']}}
 ``
 
 ## Available commands
-* RInstallPackage: Issues "devtools::install"
-* RLoadPackage: Issues "devtools::load_all"
-* RUnloadPackage: Issues "devtools::unload"
-* RBuildPackage: Issues "devtools::build"
-* RCheckPackage: Issues "devtools::check"
-* RTestPackage: Issues "devtools::test"
-* RDocumentPackage: Issues "devtools::document"
-* RMakePackage: Issues "devtools::document" and "devtools::install"
-* RSource: Sources the current file with R's `source` command
+* RInstallPackage: Runs "devtools::install"
+* RLoadPackage: Runs "devtools::load_all"
+* RUnloadPackage: Runs "devtools::unload"
+* RBuildPackage: Runs "devtools::build"
+* RCheckPackage: Runs "devtools::check"
+* RTestPackage: Runs "devtools::test"
+* RDocumentPackage: Runs "devtools::document"
+* RMakePackage: Runs "devtools::document" and "devtools::install"
 
-The DESCRITION file of the package is searched in the directory and its parents of the current buffer.
+The DESCRIPTION file of the package is searched in the current directory and its parents.
+You might want to consider setting `autochdir`.
