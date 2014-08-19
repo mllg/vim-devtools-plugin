@@ -15,6 +15,7 @@ command! -nargs=? RTestPackage :call devtools#SendDevtoolsCmd("test", <f-args>)
 command! -nargs=0 RDocumentPackage :call devtools#SendDevtoolsCmd("document")
 command! -nargs=0 RClean :call devtools#SendDevtoolsCmd("clean_dll")
 command! -nargs=0 RMake :call devtools#SendDevtoolsCmd("make")
+command! -nargs=0 RSetupTest :call devtools#SetupTest()
 
 let &cpo=s:keepcpo
 unlet s:keepcpo
