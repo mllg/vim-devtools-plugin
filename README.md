@@ -5,9 +5,9 @@ Extension for [Vim-R-Plugin](https://github.com/jcfaria/Vim-R-plugin) to support
 ## Installation
 Use your favourite bundle manager to pull in this script.
 Here is a [neobundle](https://github.com/Shougo/neobundle.vim) example using lazy load:
-``
+```{vim}
 NeoBundleLazy 'mllg/vim-devtools-plugin', {'autoload':{'filetypes':['r','rmd','rnoweb']}}
-``
+```
 
 ## Available commands
 * `RInstallPackage <dir>`: Runs "devtools::install"
