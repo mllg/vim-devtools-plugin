@@ -6,16 +6,16 @@ let g:loaded_vim_devtools_plugin=1
 let s:keepcpo= &cpo
 set cpo&vim
 
-command! -nargs=0 RInstallPackage :call devtools#SendDevtoolsCmd("install")
-command! -nargs=0 RLoadPackage :call devtools#SendDevtoolsCmd("load_all")
-command! -nargs=0 RUnloadPackage :call devtools#SendDevtoolsCmd("unload")
-command! -nargs=0 RBuildPackage :call devtools#SendDevtoolsCmd("build")
-command! -nargs=0 RCheckPackage :call devtools#SendDevtoolsCmd("check")
-command! -nargs=? RTestPackage :call devtools#SendDevtoolsCmd("test", <f-args>)
-command! -nargs=0 RDocumentPackage :call devtools#SendDevtoolsCmd("document")
-command! -nargs=0 RClean :call devtools#SendDevtoolsCmd("clean_dll")
-command! -nargs=0 RMake :call devtools#SendDevtoolsCmd("make")
-command! -nargs=0 RSetupTest :call devtools#SetupTest()
+command! -complete=dir -nargs=? RInstallPackage :call devtools#install(<f-args>)
+command! -complete=dir -nargs=? RLoadPackage :call devtools#load_all(<f-args>)
+command! -complete=dir -nargs=? RUnloadPackage :call devtools#unload(<f-args>)
+command! -complete=dir -nargs=? RBuildPackage :call devtools#build(<f-args>)
+command! -complete=dir -nargs=? RCheckPackage :call devtools#check(<f-args>)
+command! -complete=dir -nargs=* RTestPackage :call devtools#test(<f-args>)
+command! -complete=dir -nargs=? RDocumentPackage :call devtools#document(<f-args>)
+command! -complete=dir -nargs=? RClean :call devtools#clean_dll(<f-args>)
+command! -complete=dir -nargs=? RMake :call devtools#make(<f-args>)
+command! -complete=dir -nargs=? RSetupTest :call devtools#setup_test(<f-args>)
 
 let &cpo=s:keepcpo
 unlet s:keepcpo
