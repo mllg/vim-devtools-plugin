@@ -1,11 +1,8 @@
 function! devtools#find_description(path)
     if len(a:path) == 0
         let l:desc = findfile('DESCRIPTION', '.;')
-    elseif len(a:path) == 1
-        let l:desc = findfile('DESCRIPTION', expand(a:path[0]) . ';')
     else
-        call RWarningMsg('INVALID ARGS: ' . len(a:path))
-        return ''
+        let l:desc = findfile('DESCRIPTION', expand(a:path[0]) . ';')
     endif
     if l:desc == ''
         call RWarningMsg('DESCRIPTION file not found.')
@@ -99,8 +96,9 @@ endfunction
 function! devtools#setup_test(...)
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
-        let l:line  = "require(testthat); load_all('" . l:desc . "'); "
-        let l:line .= "invisible(lapply(list.files(file.path('" . l:desc . "', 'tests', 'testthat'), pattern='^helper', full.names=TRUE), source, chdir=TRUE, verbose=FALSE))"
+        let l:line  = 'require(testthat); load_all("' . l:desc . '")'
+        let l:line .= '; invisible(lapply(list.files(file.path("' . l:desc . '", "tests", "testthat"),'
+        let l:line .= ' pattern="^helper", full.names=TRUE), source, chdir=TRUE, verbose=FALSE))'
         call devtools#send_line(l:line)
     endif
 endfunction
