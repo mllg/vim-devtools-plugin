@@ -70,11 +70,11 @@ endfunction
 function! devtools#build_tags(...)
     let l:rtags_dir = fnamemodify(g:rtags_dir, ':p')
     if !isdirectory(l:rtags_dir)
-        mkdir(l:rtags_dir)
+        call mkdir(l:rtags_dir)
     endif
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
-        let l:src = fnamemodify(l:desc . 'R', ':p')
+        let l:src = fnamemodify(l:desc . '/R', ':p')
         let l:line = printf('utils::rtags(path="%s", ofile=file.path("%s", sprintf("%%s.etags", as.package("%s")$package)))', l:src, l:rtags_dir, l:desc)
         call devtools#send_line(l:line)
         call devtools#use_r_tags()
