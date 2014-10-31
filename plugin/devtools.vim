@@ -20,10 +20,5 @@ command! -complete=dir -nargs=? RBuildPackageTags :call devtools#build_tags(<f-a
 
 let g:rtags_dir = get(g:, 'rtags_dir', expand('~/.rtags'))
 
-augroup use_rtags
-    autocmd!
-    autocmd FileType r,rnoweb,rmd call devtools#use_r_tags()
-augroup END
-
 let &cpo=s:keepcpo
 unlet s:keepcpo
