@@ -13,9 +13,11 @@ function! devtools#find_description(path)
     return l:path
 endfunction
 
+
 function! devtools#send_line(line)
     call g:SendCmdToR('library(devtools); ' . a:line)
 endfunction
+
 
 function devtools#simple_cmd(cmd, ...)
     let l:desc = devtools#find_description(a:000)
@@ -43,6 +45,7 @@ function! devtools#test(...)
     endif
 endfunction
 
+
 function! devtools#make(...)
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
@@ -52,6 +55,7 @@ function! devtools#make(...)
     endif
 endfunction
 
+
 function! devtools#setup_test(...)
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
@@ -59,5 +63,29 @@ function! devtools#setup_test(...)
         let l:line .= '; invisible(lapply(list.files(file.path("' . l:desc . '", "tests", "testthat"),'
         let l:line .= ' pattern="^helper", full.names=TRUE), source, chdir=TRUE, verbose=FALSE))'
         call devtools#send_line(l:line)
+    endif
+endfunction
+
+
+function! devtools#build_tags(...)
+    let l:rtags_dir = fnamemodify(g:rtags_dir, ':p')
+    if !isdirectory(l:rtags_dir)
+        mkdir(l:rtags_dir)
+    endif
+    let l:desc = devtools#find_description(a:000)
+    if (l:desc != '')
+        let l:src = fnamemodify(l:desc . 'R', ':p')
+        let l:line = printf('utils::rtags(path="%s", ofile=file.path("%s", sprintf("%%s.etags", as.package("%s")$package)))', l:src, l:rtags_dir, l:desc)
+        call devtools#send_line(l:line)
+        call devtools#use_r_tags()
+    endif
+endfunction
+
+
+function devtools#use_r_tags()
+    let l:rtags_dir = fnamemodify(g:rtags_dir, ':p')
+    if isdirectory(l:rtags_dir)
+        let l:tags = extend(split(&tags, ','), split(glob(l:rtags_dir . '*.etags'), '\n'))
+        let &l:tags = join(filter(l:tags, 'count(l:tags, v:val) == 1'), ',')
     endif
 endfunction
