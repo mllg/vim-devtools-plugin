@@ -17,8 +17,10 @@ command! -complete=dir -nargs=* RTestPackage :call devtools#test(<f-args>)
 command! -complete=dir -nargs=? RMake :call devtools#make(<f-args>)
 command! -complete=dir -nargs=? RSetupTest :call devtools#setup_test(<f-args>)
 command! -complete=dir -nargs=? RBuildPackageTags :call devtools#build_tags(<f-args>)
+command! -complete=file -nargs=? RSourceFile :call devtools#source_file(<f-args>)
+command! -complete=file -nargs=? RSetMaster :call devtools#set_master(<f-args>)
 
-let g:rtags_dir = get(g:, 'rtags_dir', expand('~/.rtags'))
+let g:devtools_rtags_dir = get(g:, 'devtools_rtags_dir', expand('~/.rtags'))
 
 let &cpo=s:keepcpo
 unlet s:keepcpo

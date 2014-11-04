@@ -81,8 +81,28 @@ function! devtools#build_tags(...)
     endif
 endfunction
 
+function! devtools#source_file(...)
+    if a:0 == 0
+        if exists("s:devtools_master_file")
+            let l:file = s:devtools_master_file
+        else
+            let l:file = expand('%:p')
+        endif
+    else
+        let l:file = a:1
+    endif
+    call g:SendCmdToR(printf('source("%s")', l:file))
+endfunction
 
-function devtools#use_r_tags()
+function! devtools#set_master(...)
+    if a:0 == 0
+        let s:devtools_master_file = expand('%:p')
+    else
+        let s:devtools_master_file = a:1
+    endif
+endfunction
+
+function! devtools#use_r_tags()
     let l:rtags_dir = fnamemodify(g:rtags_dir, ':p')
     if isdirectory(l:rtags_dir)
         let l:tags = extend(split(&tags, ','), split(glob(l:rtags_dir . '*.etags'), '\n'))
