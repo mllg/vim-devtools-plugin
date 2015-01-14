@@ -8,7 +8,7 @@ function! devtools#find_description(path)
         call RWarningMsg('DESCRIPTION file not found.')
         return ""
     endif
-    let l:path = fnamemodify(l:desc, ':h')
+    let l:path = fnamemodify(l:desc, ':p:h')
     echo 'Using package DESCRIPTION in "' . l:path . '".'
     return l:path
 endfunction
