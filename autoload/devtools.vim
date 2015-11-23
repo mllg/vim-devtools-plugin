@@ -15,7 +15,7 @@ endfunction
 
 
 function! devtools#send_line(line)
-    call g:SendCmdToR('library(devtools); ' . a:line)
+    call g:SendCmdToR('requireNamespace("devtools"); ' . a:line)
 endfunction
 
 
@@ -59,7 +59,7 @@ endfunction
 function! devtools#setup_test(...)
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
-        let l:line  = 'require(testthat); load_all("' . l:desc . '")'
+        let l:line  = 'library("testthat"); devtools::load_all("' . l:desc . '")'
         let l:line .= '; invisible(lapply(list.files(file.path("' . l:desc . '", "tests", "testthat"),'
         let l:line .= ' pattern="^helper", full.names=TRUE), source, chdir=TRUE, verbose=FALSE))'
         call devtools#send_line(l:line)
@@ -75,7 +75,9 @@ function! devtools#build_tags(...)
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
         let l:src = fnamemodify(l:desc . '/R', ':p')
-        let l:line = printf('utils::rtags(path="%s", ofile=file.path("%s", sprintf("%%s.etags", as.package("%s")$package)))', l:src, l:rtags, l:desc)
+        let l:line  = printf('.etagsfile = tempfile(); utils::rtags(path="%s", ofile= .etagsfile)', l:src)
+        let l:line .= printf('; etags2ctags(.etagsfile, file.path("%s", sprintf("%%s.ctags", devtools::as.package("%s")$package)))', l:rtags, l:desc)
+        let l:line .= '; rm(list = ".etagsfile")'
         call devtools#send_line(l:line)
         call devtools#use_r_tags()
     endif
@@ -105,7 +107,7 @@ endfunction
 function! devtools#use_r_tags()
     let l:rtags = fnamemodify(g:devtools_rtags_dir, ':p')
     if isdirectory(l:rtags)
-        let l:tags = extend(split(&tags, ','), split(glob(l:rtags. '*.etags'), '\n'))
+        let l:tags = extend(split(&tags, ','), split(glob(l:rtags. '*.ctags'), '\n'))
         let &l:tags = join(filter(l:tags, 'count(l:tags, v:val) == 1'), ',')
     endif
 endfunction
