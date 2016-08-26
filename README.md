@@ -1,6 +1,6 @@
 # vim-devtools-plugin
 
-Extension for [Vim-R-Plugin](https://github.com/jcfaria/Vim-R-plugin) to support the
+Extension for the vim plugins [Vim-R-Plugin](https://github.com/jcfaria/Vim-R-plugin) and [Nvim-r](https://github.com/jalvesaq/Nvim-R) to support the
 [devtools R package](https://github.com/hadley/devtools).
 
 ## Installation
