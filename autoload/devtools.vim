@@ -96,6 +96,20 @@ function! devtools#source_file(...)
     call g:SendCmdToR(printf('source("%s")', l:file))
 endfunction
 
+
+function devtools#usage(...)
+    let l:desc = devtools#find_description(a:000)
+    if (l:desc != '')
+        let l:tmp = '/tmp/rusage'
+        let l:line  = 'devtools::load_all("' . l:desc . '")'
+        let l:line .= '; library(codetools); writeLines(capture.output(checkUsagePackage(devtools::as.package("' . l:desc . '")$package)), "' . l:tmp . '")'
+        call devtools#send_line(l:line)
+        " set efm+=%m\ (%f:%l[0-9-]%#)
+        set efm+=%m\ (%f:%l%.%#)
+        " cfile "/tmp/rusage"
+    endif
+endfunction
+
 function! devtools#set_master(...)
     if a:0 == 0
         let s:devtools_master_file = expand('%:p')
