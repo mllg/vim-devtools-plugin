@@ -96,6 +96,31 @@ function! devtools#source_file(...)
     call g:SendCmdToR(printf('source("%s")', l:file))
 endfunction
 
+
+function devtools#usage(...)
+    let l:desc = devtools#find_description(a:000)
+    if (l:desc != '')
+        let l:tmp = tempname()
+        let l:line  = 'devtools::load_all("' . l:desc . '")'
+        let l:line .= '; local({ tmp = capture.output(codetools::checkUsagePackage(devtools::as.package("' . l:desc . '")$package)); writeLines(tmp, "' . l:tmp . '")})'
+        call devtools#send_line(l:line)
+        setlocal efm+=%m\ (%f:%l%.%#)
+
+        let l:i = 0
+        while l:i < 50
+            sleep 100m
+            if filereadable(l:tmp) == 1
+                sleep 50m
+                execute ":cfile " . l:tmp
+                call delete(l:tmp)
+                return
+            endif
+            let l:i += 1
+        endwhile
+        echo "Timeout reached."
+    endif
+endfunction
+
 function! devtools#set_master(...)
     if a:0 == 0
         let s:devtools_master_file = expand('%:p')
