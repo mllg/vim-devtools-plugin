@@ -107,7 +107,7 @@ function devtools#usage(...)
         setlocal efm+=%m\ (%f:%l%.%#)
 
         let l:i = 0
-        while l:i < 50
+        while l:i < 100
             sleep 100m
             if filereadable(l:tmp) == 1
                 sleep 50m
