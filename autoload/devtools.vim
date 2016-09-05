@@ -106,18 +106,12 @@ function devtools#usage(...)
         call devtools#send_line(l:line)
         setlocal efm+=%m\ (%f:%l%.%#)
 
-        let l:i = 0
-        while l:i < 100
+        while !filereadable(l:tmp)
             sleep 100m
-            if filereadable(l:tmp) == 1
-                sleep 50m
-                execute ":cfile " . l:tmp
-                call delete(l:tmp)
-                return
-            endif
-            let l:i += 1
         endwhile
-        echo "Timeout reached."
+        sleep 50m
+        execute ":cfile " . l:tmp
+        call delete(l:tmp)
     endif
 endfunction
 
