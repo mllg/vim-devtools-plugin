@@ -100,13 +100,24 @@ endfunction
 function devtools#usage(...)
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
-        let l:tmp = '/tmp/rusage'
+        let l:tmp = tempname()
         let l:line  = 'devtools::load_all("' . l:desc . '")'
-        let l:line .= '; library(codetools); writeLines(capture.output(checkUsagePackage(devtools::as.package("' . l:desc . '")$package)), "' . l:tmp . '")'
+        let l:line .= '; local({ tmp = capture.output(codetools::checkUsagePackage(devtools::as.package("' . l:desc . '")$package)); writeLines(tmp, "' . l:tmp . '")})'
         call devtools#send_line(l:line)
-        " set efm+=%m\ (%f:%l[0-9-]%#)
-        set efm+=%m\ (%f:%l%.%#)
-        " cfile "/tmp/rusage"
+        setlocal efm+=%m\ (%f:%l%.%#)
+
+        let l:i = 0
+        while l:i < 50
+            sleep 100m
+            if filereadable(l:tmp) == 1
+                sleep 50m
+                execute ":cfile " . l:tmp
+                call delete(l:tmp)
+                return
+            endif
+            let l:i += 1
+        endwhile
+        echo "Timeout reached."
     endif
 endfunction
 
