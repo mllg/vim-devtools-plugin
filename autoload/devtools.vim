@@ -33,7 +33,7 @@ function! devtools#test(...)
         let l:desc = devtools#find_description([a:1])
     else
         if a:0 == 1
-            let l:filter = '"' + substitute(a:1, '"', '', 'g') + '"'
+            let l:filter = '"' . substitute(a:1, '"', '', 'g') . '"'
         else
             let l:filter = 'NULL'
         endif
