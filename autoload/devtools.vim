@@ -1,16 +1,23 @@
+function! devtools#escape(path)
+    return substitute(a:path, '\', '/', 'g')
+endfunction
+
+
 function! devtools#find_description(path)
     if len(a:path) == 0
         let l:desc = findfile('DESCRIPTION', '.;')
     else
         let l:desc = findfile('DESCRIPTION', expand(a:path[0]) . ';')
     endif
+
     if l:desc == ''
         call RWarningMsg('DESCRIPTION file not found.')
         return ""
     endif
+
     let l:path = fnamemodify(l:desc, ':p:h')
     echo 'Using package DESCRIPTION in "' . l:path . '".'
-    return l:path
+    return devtools#escape(l:path)
 endfunction
 
 
@@ -73,9 +80,8 @@ function! devtools#build_tags(...)
     endif
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
-        let l:src = fnamemodify(l:desc . '/R', ':p')
-        let l:line  = printf('.etagsfile = tempfile(); utils::rtags(path="%s", ofile= .etagsfile)', l:src)
-        let l:line .= printf('; etags2ctags(.etagsfile, file.path("%s", sprintf("%%s.ctags", devtools::as.package("%s")$package)))', l:rtags, l:desc)
+        let l:line  = printf('.etagsfile = tempfile(); utils::rtags(path=file.path("%s", "R"), ofile= .etagsfile)', l:desc)
+        let l:line .= printf('; etags2ctags(.etagsfile, file.path("%s", sprintf("%%s.ctags", devtools::as.package("%s")$package)))', devtools#escape(l:rtags), l:desc)
         let l:line .= '; rm(list = ".etagsfile")'
         call devtools#send_line(l:line)
         call devtools#use_r_tags()
@@ -87,7 +93,7 @@ function! devtools#source_file(...)
         if exists("s:devtools_master_file")
             let l:file = s:devtools_master_file
         else
-            let l:file = expand('%:p')
+            let l:file = devtools#escape(expand('%:p'))
         endif
     else
         let l:file = a:1
@@ -101,7 +107,7 @@ function devtools#usage(...)
     if (l:desc != '')
         let l:tmp = tempname()
         let l:line  = 'devtools::load_all("' . l:desc . '")'
-        let l:line .= '; local({ tmp = capture.output(codetools::checkUsagePackage(devtools::as.package("' . l:desc . '")$package)); writeLines(tmp, "' . l:tmp . '")})'
+        let l:line .= '; local({ tmp = capture.output(codetools::checkUsagePackage(devtools::as.package("' . l:desc . '")$package)); writeLines(tmp, "' . devtools#escape(l:tmp) . '")})'
         call devtools#send_line(l:line)
         setlocal efm+=%m\ (%f:%l%.%#)
 
@@ -116,7 +122,7 @@ endfunction
 
 function! devtools#set_master(...)
     if a:0 == 0
-        let s:devtools_master_file = expand('%:p')
+        let s:devtools_master_file = devtools#escape(expand('%:p'))
     else
         let s:devtools_master_file = a:1
     endif
