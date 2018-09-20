@@ -11,6 +11,9 @@ Plugin 'mllg/vim-devtools-plugin'
 " Neobundle with lazy load
 NeoBundleLazy 'mllg/vim-devtools-plugin',
     \ {'autoload' : {'filetypes' : ['r','rmd','rnoweb']}}
+
+" Vim-Plug with lazy load
+Plug 'mllg/vim-devtools-plugin', { 'for': ['r', 'rmd', 'rnoweb']}
 ```
 
 ## Available commands
