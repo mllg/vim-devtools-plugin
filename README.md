@@ -12,6 +12,9 @@ Plugin 'mllg/vim-devtools-plugin'
 NeoBundleLazy 'mllg/vim-devtools-plugin',
     \ {'autoload' : {'filetypes' : ['r','rmd','rnoweb']}}
 
+" dein with lazy load
+call dein#add('mllg/vim-devtools-plugin', {'on_ft' : ['r', 'rmd', 'rdoc', 'rnoweb']})
+
 " Vim-Plug with lazy load
 Plug 'mllg/vim-devtools-plugin', { 'for': ['r', 'rmd', 'rnoweb']}
 ```
