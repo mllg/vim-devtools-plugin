@@ -52,6 +52,12 @@ function! devtools#test(...)
 endfunction
 
 
+function! devtools#test_file()
+    let l:filter = '"' . substitute(expand('%:t:r'), '^test[-_]', '', '') . '"'
+    call devtools#test(l:filter)
+endfunction
+
+
 function! devtools#make(...)
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')

@@ -26,6 +26,7 @@ Plug 'mllg/vim-devtools-plugin', { 'for': ['r', 'rmd', 'rnoweb']}
 * `RBuildPackage <dir>`: Runs `devtools::build`.
 * `RCheckPackage <dir>`: Runs `devtools::check`.
 * `RTestPackage <dir> <filter>`: Runs `devtools::test` using specified filter (default `''`).
+* `RTestFile`: Runs `devtools::test` setting a filter to test the current file.
 * `RDocumentPackage <dir>`: Runs `devtools::document`
 * `RMakePackage <dir>`: Runs `devtools::document`, then `devtools::install`.
 * `RSetupTest <dir>`: Loads "testthat" and invisibly sources all files matching pattern `^helper` in the test directory.
