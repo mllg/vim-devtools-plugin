@@ -137,7 +137,7 @@ endfunction
 function! devtools#use_r_tags()
     let l:rtags = fnamemodify(g:devtools_rtags_dir, ':p')
     if isdirectory(l:rtags)
-        let l:tags = extend(split(&tags, ','), split(glob(l:rtags. '*.ctags'), '\n'))
-        let &l:tags = join(filter(l:tags, 'count(l:tags, v:val) == 1'), ',')
+        let l:tags = extend(split(&tags, ','), split(glob(l:rtags . '*.ctags'), '\n'))
+        let &tags = join(filter(l:tags, 'count(l:tags, v:val) == 1'), ',')
     endif
 endfunction
