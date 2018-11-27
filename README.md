@@ -4,7 +4,7 @@ Extension for the vim plugins [Vim-R-Plugin](https://github.com/jcfaria/Vim-R-pl
 
 ## Installation
 Use your favourite bundle manager to install this script, e.g.:
-```{vim}
+```vim
 " Vundle
 Plugin 'mllg/vim-devtools-plugin'
 
