@@ -37,3 +37,8 @@ Plug 'mllg/vim-devtools-plugin', { 'for': ['r', 'rmd', 'rnoweb']}
 
 The DESCRIPTION file is searched in `<dir>` and all its parents.
 Default for `<dir>` is the directory of the current buffer.
+
+If you do not want all these commands to be defined, set the option `devtools_commands`:
+```vim
+let g:devtools_commands = 0
+```
