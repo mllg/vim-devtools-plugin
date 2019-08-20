@@ -21,15 +21,10 @@ function! devtools#find_description(path)
 endfunction
 
 
-function! devtools#send_line(line)
-    call g:SendCmdToR('requireNamespace("devtools"); ' . a:line)
-endfunction
-
-
 function devtools#simple_cmd(cmd, ...)
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
-        call devtools#send_line('devtools::' . a:cmd . '("' . l:desc . '")')
+        call g:SendCmdToR('devtools::' . a:cmd . '("' . l:desc . '")')
     endif
 endfunction
 
@@ -47,7 +42,15 @@ function! devtools#test(...)
         let l:desc = devtools#find_description([])
     endif
     if (l:desc != '')
-        call devtools#send_line('devtools::test("' . l:desc . '", filter=' . l:filter . ')')
+        let l:line  = 'local({ '
+        let l:line .= 'tmp = drop(read.dcf(file.path("' . l:desc . '", "DESCRIPTION"), fields = c("Imports", "Suggests"))); '
+        let l:line .= 'if (any(grepl("tinytest", tmp, fixed = TRUE))) {'
+        let l:line .= '  tinytest::run_test_dir(file.path("' . l:desc . '", "inst", "tinytest"))'
+        let l:line .= '} else {'
+        let l:line .= '  devtools::test("' . l:desc . '", filter = ' . l:filter . ')'
+        let l:line .= '}'
+        let l:line .= '})'
+        call g:SendCmdToR(l:line)
     endif
 endfunction
 
@@ -63,7 +66,7 @@ function! devtools#make(...)
     if (l:desc != '')
         let l:line  = 'devtools::document("' . l:desc . '")'
         let l:line .= '; devtools::install("' . l:desc . '")'
-        call devtools#send_line(l:line)
+        call g:SendCmdToR(l:line)
     endif
 endfunction
 
@@ -74,7 +77,7 @@ function! devtools#setup_test(...)
         let l:line  = 'library("testthat"); devtools::load_all("' . l:desc . '")'
         let l:line .= '; invisible(lapply(list.files(file.path("' . l:desc . '", "tests", "testthat"),'
         let l:line .= ' pattern="^helper", full.names=TRUE), source, chdir=TRUE, verbose=FALSE))'
-        call devtools#send_line(l:line)
+        call g:SendCmdToR(l:line)
     endif
 endfunction
 
@@ -86,10 +89,11 @@ function! devtools#build_tags(...)
     endif
     let l:desc = devtools#find_description(a:000)
     if (l:desc != '')
-        let l:line  = printf('.etagsfile = tempfile(); utils::rtags(path=file.path("%s", "R"), ofile= .etagsfile)', l:desc)
-        let l:line .= printf('; etags2ctags(.etagsfile, file.path("%s", sprintf("%%s.ctags", devtools::as.package("%s")$package)))', devtools#escape(l:rtags), l:desc)
-        let l:line .= '; rm(list = ".etagsfile")'
-        call devtools#send_line(l:line)
+        let l:line  = 'local({ '
+        let l:line .= printf('etagsfile = tempfile(); utils::rtags(path=file.path("%s", "R"), ofile= etagsfile)', l:desc)
+        let l:line .= printf('; etags2ctags(etagsfile, file.path("%s", sprintf("%%s.ctags", devtools::as.package("%s")$package)))', devtools#escape(l:rtags), l:desc)
+        let l:line .= ' })'
+        call g:SendCmdToR(l:line)
         call devtools#use_r_tags()
     endif
 endfunction
@@ -114,7 +118,7 @@ function devtools#usage(...)
         let l:tmp = tempname()
         let l:line  = 'devtools::load_all("' . l:desc . '")'
         let l:line .= '; local({ tmp = capture.output(codetools::checkUsagePackage(devtools::as.package("' . l:desc . '")$package)); writeLines(tmp, "' . devtools#escape(l:tmp) . '")})'
-        call devtools#send_line(l:line)
+        call g:SendCmdToR(l:line)
         setlocal efm+=%m\ (%f:%l%.%#)
 
         while !filereadable(l:tmp)
