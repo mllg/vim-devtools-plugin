@@ -42,3 +42,40 @@ If you do not want all these commands to be defined, set the option `devtools_co
 ```vim
 let g:devtools_commands = 0
 ```
+
+## Support for FZF
+
+If you are a user of [FZF](https://github.com/junegunn/fzf.vim), you can grep your R history file with the following setup:
+
+### Make R history persistent across sessions
+
+Put the following code in your `.Rprofile`, preferably inside the `.First` function:
+
+```{r}
+if (interactive()) {
+    history_file = normalizePath("~/.Rhistory", mustWork = FALSE)
+    ok = try(utils::loadhistory(history_file))
+    if (inherits(ok, "try-error")) {
+        message("History could not be loaded: ", history_file)
+    } else {
+        message("Loaded history: ", history_file)
+        .Last <<- function() try(utils::savehistory(history_file))
+    }
+}
+```
+
+### Create new command
+```{vim}
+function! s:fzf_r_history()
+    let l:history_file = expand('~/.Rhistory')
+    call g:devtools#send_cmd('utils::savehistory("' . l:history_file . '")')
+    call fzf#run({
+                \ 'source': 'cat ' . l:history_file . ' | grep -v "# \\[history skip\\]$" | uniq',
+                \ 'sink' :  g:SendCmdToR,
+                \ 'options': '--no-sort --tac',
+                \ 'down' : '40%' })
+endfunction
+
+command! RHistory call s:fzf_r_history()
+```
+Map to a key as you find appropiate.
