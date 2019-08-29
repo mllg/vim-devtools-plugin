@@ -51,7 +51,7 @@ If you are a user of [FZF](https://github.com/junegunn/fzf.vim), you can grep yo
 
 Put the following code in your `.Rprofile`, preferably inside the `.First` function:
 
-```{r}
+```r
 if (interactive()) {
     history_file = normalizePath("~/.Rhistory", mustWork = FALSE)
     ok = try(utils::loadhistory(history_file))
@@ -65,7 +65,7 @@ if (interactive()) {
 ```
 
 ### Create new command
-```{vim}
+```vim
 function! s:fzf_r_history()
     let l:history_file = expand('~/.Rhistory')
     call g:devtools#send_cmd('utils::savehistory("' . l:history_file . '")')
