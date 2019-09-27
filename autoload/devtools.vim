@@ -45,14 +45,11 @@ function! devtools#test(...)
         let l:desc = devtools#find_description([])
     endif
     if (l:desc != '')
-        let l:line  = 'local({ '
-        let l:line .= 'tmp = drop(read.dcf(file.path("' . l:desc . '", "DESCRIPTION"), fields = c("Imports", "Suggests"))); '
-        let l:line .= 'if (any(grepl("tinytest", tmp, fixed = TRUE))) {'
-        let l:line .= '  tinytest::run_test_dir(file.path("' . l:desc . '", "inst", "tinytest"))'
-        let l:line .= '} else {'
-        let l:line .= '  devtools::test("' . l:desc . '", filter = ' . l:filter . ')'
-        let l:line .= '}'
-        let l:line .= '})'
+        if filereadable(l:desc . '/tests/tinytest.R')
+            let l:line = 'tinytest::run_test_dir(file.path("' . l:desc . '", "inst", "tinytest"))'
+        else
+            let l:line = '  devtools::test("' . l:desc . '", filter = ' . l:filter . ')'
+        endif
         call devtools#send_cmd(l:line)
     endif
 endfunction
