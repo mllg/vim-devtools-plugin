@@ -48,7 +48,7 @@ function! devtools#test(...)
         if filereadable(l:desc . '/tests/tinytest.R')
             let l:line = 'tinytest::run_test_dir(file.path("' . l:desc . '", "inst", "tinytest"))'
         else
-            let l:line = '  devtools::test("' . l:desc . '", filter = ' . l:filter . ')'
+            let l:line = '  testthat::test_local("' . l:desc . '", filter = ' . l:filter . ')'
         endif
         call devtools#send_cmd(l:line)
     endif
