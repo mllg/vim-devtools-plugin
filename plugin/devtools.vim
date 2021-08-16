@@ -15,7 +15,6 @@ if !exists('g:devtools_commands') || g:devtools_commands
     command! -complete=dir -nargs=? RDocumentPackage :call devtools#simple_cmd('document', <f-args>)
     command! -complete=dir -nargs=? RClean :call devtools#simple_cmd('clean_dll', <f-args>)
     command! -complete=dir -nargs=* RTestPackage :call devtools#test(<f-args>)
-    command! -nargs=0 RTestFile :call devtools#test_file()
     command! -complete=dir -nargs=? RMake :call devtools#make(<f-args>)
     command! -complete=dir -nargs=? RSetupTest :call devtools#setup_test(<f-args>)
     command! -complete=dir -nargs=? RBuildPackageTags :call devtools#build_tags(<f-args>)
